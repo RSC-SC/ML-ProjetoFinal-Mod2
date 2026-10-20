@@ -23,11 +23,11 @@ avalia a **movimentação correta** (nada fica eternamente em `doing`).
 | Coluna | Cartões |
 |---|---|
 | backlog | Fine-tuning opcional · Otimização de latência · Publicação em nuvem |
-| todo | Validação em imagens variadas (fotos externas) · Gravação do vídeo · Entrega no AVA |
+| todo | Gravação do vídeo · Entrega no AVA |
 | doing | _(nada parado — mova o card assim que iniciar)_ |
 | blocked | _(vazia — mantenha a coluna mesmo assim)_ |
 | review | README completo (aguardando revisão final) |
-| done | Definição do escopo (trilha C, 13 classes) · Setup GitFlow · Ambiente Python 3.12 e dependências · Estrutura da API · Endpoint `POST /detect` · Testes pytest (14) · Quadro Kanban público · Baixar/preparar dataset (1.160 imagens) · Relatório de contagens e splits sem vazamento · Avaliação medida no split de teste |
+| done | Definição do escopo (trilha C, 13 classes) · Setup GitFlow · Ambiente Python 3.12 e dependências · Estrutura da API · Endpoint `POST /detect` · Testes pytest (14) · Quadro Kanban público · Baixar/preparar dataset (1.160 imagens) · Relatório de contagens e splits sem vazamento · Avaliação medida no split de teste (13/13 classes) · Validação em imagens variadas (38 imagens externas, 13/13 classes) |
 
 ---
 

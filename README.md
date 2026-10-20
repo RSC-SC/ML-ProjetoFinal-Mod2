@@ -98,6 +98,33 @@ usando **exatamente** o mesmo caminho de inferência da API (`conf=0.25`, `iou=0
   [`docs/evaluation-report-conf010.md`](docs/evaluation-report-conf010.md).
 - Reproduzir: `python scripts/evaluate.py` e `CONF=0.10 python scripts/evaluate.py --out docs/evaluation-report-conf010.md`.
 
+### Generalização (imagens fora do COCO)
+
+O split de teste acima vem do mesmo COCO em que o modelo foi treinado. Para provar
+comportamento em imagens que o modelo **nunca viu**, baixamos **38 imagens do
+Wikimedia Commons** (2 a 4 por classe, fora do COCO, licenças livres registradas em
+[`examples/external/ATTRIBUICAO.md`](examples/external/ATTRIBUICAO.md)):
+
+| Métrica | Resultado |
+|---|---|
+| Imagens avaliadas | 38 (fora do COCO) |
+| Classes detectadas | **13/13** |
+| Acerto da classe esperada | 22/38 (**58%**) |
+| Imagens sem nenhuma detecção | 12/38 |
+
+Leitura honesta dos números:
+- **As 13 classes aparecem em imagens nunca vistas** — inclusive `pizza` (0,88),
+  `donut` (0,93), `broccoli` (0,94), `carrot` (0,91) e `cup` (0,89) com confiança alta.
+- As falhas se concentram em fotos onde o objeto **não é o assunto** (cena de rua,
+  artefato de museu, foto de produto em fundo branco): as categorias do Commons são
+  ruidosas, e essa é uma limitação da fonte, não só do modelo.
+- Os erros restantes são pares naturalmente confundíveis: `donut`↔`cake`,
+  `cup`↔`bottle`, `orange`↔`apple`, `carrot`↔`bowl` — comportamento esperado do
+  `yolo11n` (o menor modelo da família).
+- Relatório imagem a imagem: [`docs/external-report.md`](docs/external-report.md).
+- Reproduzir: `python scripts/fetch_external.py` (baixa/atribui) e
+  `python scripts/eval_external.py` (gera o relatório e as cópias anotadas para o vídeo).
+
 ## Requisitos
 
 - macOS com Apple Silicon (testado em M5 Pro, 24 GB) — funciona também em Linux/Windows com CPU.
