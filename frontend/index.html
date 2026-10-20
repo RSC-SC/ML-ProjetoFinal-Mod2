@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScanVision — Demo</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <h1>ScanVision <span class="tag">demo</span></h1>
+    <p>
+      Envie uma imagem para <code>POST /detect</code> e veja as caixas desenhadas aqui.
+      A API continua devolvendo só JSON — este frontend é apenas um consumidor.
+    </p>
+  </header>
+
+  <main>
+    <section class="panel" id="upload-panel">
+      <div id="drop-zone" tabindex="0">
+        <p><strong>Arraste uma imagem</strong> ou clique para escolher</p>
+        <p class="hint">JPEG, PNG ou WEBP</p>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden />
+      </div>
+      <label class="endpoint">
+        Endpoint:
+        <input type="text" id="endpoint" value="http://127.0.0.1:8000/detect" spellcheck="false" />
+      </label>
+      <p id="status" class="status"></p>
+    </section>
+
+    <section class="panel" id="image-panel" hidden>
+      <canvas id="canvas"></canvas>
+    </section>
+
+    <section class="panel" id="results-panel" hidden>
+      <h2>Detecções <span id="count" class="tag"></span></h2>
+      <table>
+        <thead>
+          <tr><th>Classe</th><th>Confiança</th><th>Caixa (x_min, y_min, x_max, y_max)</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <h2>Resposta JSON da API</h2>
+      <pre id="json"></pre>
+    </section>
+  </main>
+
+  <footer>
+    <a href="/docs">Swagger</a> · <a href="/health">/health</a> ·
+    <a href="https://github.com/RSC-SC/ML-ProjetoFinal-Mod2">repositório</a>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

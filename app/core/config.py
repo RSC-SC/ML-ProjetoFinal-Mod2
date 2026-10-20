@@ -28,6 +28,13 @@ class Settings(BaseSettings):
     max_upload_mb: int = Field(default=10, gt=0)
     #: `dataset` = só as 13 classes do dataset; `all` = as 80 classes do COCO.
     scope: Literal["dataset", "all"] = "dataset"
+    #: Origens liberadas para CORS, separadas por vírgula. Vazio = CORS desabilitado
+    #: (o frontend servido pela própria API não precisa de CORS).
+    cors_origins: str = ""
+
+    def allowed_origins(self) -> list[str]:
+        """Converte `cors_origins` em lista, ignorando espaços e entradas vazias."""
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
     def resolve_device(self) -> str:
         """Resolve `auto` para `mps` (Apple Silicon) ou `cpu`."""
