@@ -4,7 +4,7 @@ Quadro público: <https://trello.com/b/esPArbhZ/scanvision>
 
 Este arquivo guarda o conteúdo dos cartões (título com o nome do aluno, especificação e
 critério de pronto). Mantenha-o sincronizado com o Trello: **depois de mover um card no
-quadro, refleta o movimento na [seção 2](#2-coluna-atual-estado-atual)**. A rubrica
+quadro, refleta o movimento na seção 2 abaixo)**. A rubrica
 avalia a **movimentação correta** (nada fica eternamente em `doing`).
 
 ## 1. Como montar o quadro

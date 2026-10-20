@@ -10,6 +10,7 @@ front-end ou sistema de PDV/estoque.
 
 - [Dataset e classes](#dataset-e-classes)
 - [Justificativa da arquitetura (por que YOLO11n)](#justificativa-da-arquitetura-por-que-yolo11n)
+- [Avaliação (resultados medidos)](#avaliação-resultados-medidos)
 - [Requisitos](#requisitos)
 - [Instalação](#instalação)
 - [Preparação do dataset](#preparação-do-dataset)
@@ -73,6 +74,27 @@ imagens; a menor é `hot dog` (51 imagens) e a maior `cup` (390).
 _Obs.: se o trabalho passar a ser em squad, acrescente aqui a tabela de mAP e velocidade
 comparando `yolo11n/s/m`._
 
+## Avaliação (resultados medidos)
+
+Executado com `python scripts/evaluate.py` sobre as **174 imagens do split `teste`**,
+usando **exatamente** o mesmo caminho de inferência da API (`conf=0.25`, `iou=0.45`,
+`device=mps`, escopo das 13 classes) e casamento predito×referência com **IoU ≥ 0,5**:
+
+| Ponto de operação | Precisão | Recall | F1 | Classes detectadas |
+|---|---|---|---|---|
+| `conf=0.25` (padrão da API) | **0,70** | **0,42** | **0,52** | **13/13** |
+| `conf=0.10` | 0,48 | 0,52 | 0,50 | **13/13** |
+
+- **O modelo pré-treinado reconhece as 13 classes sem nenhum treino** — comportamento
+  esperado, pois todas existem entre as 80 classes do COCO em que o `yolo11n` foi
+  treinado. É esse o ponto que sustenta o critério "reconhece as 10+ classes com clareza".
+- Baixar o limiar de confiança troca precisão por recall (aqui, medido: de 0,70/0,42 para
+  0,48/0,52) — por isso o padrão é `conf=0.25`.
+- Tabelas por classe (GT, TP, FP, FN, confiança média):
+  [`docs/evaluation-report.md`](docs/evaluation-report.md) e
+  [`docs/evaluation-report-conf010.md`](docs/evaluation-report-conf010.md).
+- Reproduzir: `python scripts/evaluate.py` e `CONF=0.10 python scripts/evaluate.py --out docs/evaluation-report-conf010.md`.
+
 ## Requisitos
 
 - macOS com Apple Silicon (testado em M5 Pro, 24 GB) — funciona também em Linux/Windows com CPU.
@@ -119,36 +141,54 @@ serviço.
 
 ## Payload de exemplo
 
-**Requisição** (Swagger, Postman ou cURL):
+**Requisição** (Swagger, Postman ou cURL) — usando a imagem de exemplo do repositório:
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/detect" \
   -H "accept: application/json" \
-  -F "file=@exemplo.jpg;type=image/jpeg"
+  -F "file=@examples/000000002149.jpg;type=image/jpeg"
 ```
 
-**Resposta** (contrato exigido pelo enunciado — sem imagem desenhada):
+**Resposta real** (contrato exigido pelo enunciado — sem imagem desenhada):
 
 ```json
 {
   "status": "success",
   "detections": [
     {
-      "class_name": "pizza",
-      "confidence": 0.92,
-      "box": { "x_min": 150, "y_min": 200, "x_max": 250, "y_max": 300 }
+      "class_name": "apple",
+      "confidence": 0.7957,
+      "box": { "x_min": 78, "y_min": 74, "x_max": 341, "y_max": 329 }
     },
     {
-      "class_name": "bottle",
-      "confidence": 0.87,
-      "box": { "x_min": 40, "y_min": 60, "x_max": 95, "y_max": 210 }
+      "class_name": "apple",
+      "confidence": 0.6672,
+      "box": { "x_min": 335, "y_min": 71, "x_max": 586, "y_max": 325 }
+    },
+    {
+      "class_name": "apple",
+      "confidence": 0.6225,
+      "box": { "x_min": 0, "y_min": 236, "x_max": 250, "y_max": 399 }
+    },
+    {
+      "class_name": "apple",
+      "confidence": 0.2705,
+      "box": { "x_min": 7, "y_min": 66, "x_max": 635, "y_max": 405 }
+    },
+    {
+      "class_name": "banana",
+      "confidence": 0.2581,
+      "box": { "x_min": 574, "y_min": 161, "x_max": 640, "y_max": 330 }
     }
   ]
 }
 ```
 
-> Este é o formato exato. Os valores acima são o **modelo do contrato**; o payload
-> real obtido na demonstração está em [examples/payload_real.json](examples/payload_real.json).
+> Esta resposta foi obtida executando a API real (`uvicorn main:app`) e fazendo o
+> upload da imagem — não foi digitada à mão. Arquivo original:
+> [`examples/payload_real.json`](examples/payload_real.json) ·
+> regenerar com `python scripts/demo_payload.py`.
+> A imagem `examples/000000002149.jpg` vem do split de teste do COCO 2017.
 
 **Erros possíveis:** `400` content-type/arquivo inválido · `413` acima de
 `MAX_UPLOAD_MB` · `503` modelo não carregado.

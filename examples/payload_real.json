@@ -1,0 +1,64 @@
+{
+  "request": {
+    "method": "POST",
+    "endpoint": "/detect",
+    "content_type": "multipart/form-data",
+    "field": "file",
+    "file": "000000002149.jpg"
+  },
+  "response": {
+    "status": "success",
+    "detections": [
+      {
+        "class_name": "apple",
+        "confidence": 0.7957,
+        "box": {
+          "x_min": 78,
+          "y_min": 74,
+          "x_max": 341,
+          "y_max": 329
+        }
+      },
+      {
+        "class_name": "apple",
+        "confidence": 0.6672,
+        "box": {
+          "x_min": 335,
+          "y_min": 71,
+          "x_max": 586,
+          "y_max": 325
+        }
+      },
+      {
+        "class_name": "apple",
+        "confidence": 0.6225,
+        "box": {
+          "x_min": 0,
+          "y_min": 236,
+          "x_max": 250,
+          "y_max": 399
+        }
+      },
+      {
+        "class_name": "apple",
+        "confidence": 0.2705,
+        "box": {
+          "x_min": 7,
+          "y_min": 66,
+          "x_max": 635,
+          "y_max": 405
+        }
+      },
+      {
+        "class_name": "banana",
+        "confidence": 0.2581,
+        "box": {
+          "x_min": 574,
+          "y_min": 161,
+          "x_max": 640,
+          "y_max": 330
+        }
+      }
+    ]
+  }
+}
