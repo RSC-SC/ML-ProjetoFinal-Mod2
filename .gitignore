@@ -1,0 +1,25 @@
+# Dados e artefatos de treino (baixados/gerados localmente)
+data/
+datasets/
+runs/
+*.pt
+*.onnx
+*.engine
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Sistema
+.DS_Store
+
+# Segredos
+.env
+.env.local
+
+# Ferramenta local (não faz parte do entregável)
+.opencode/
