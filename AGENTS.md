@@ -8,7 +8,19 @@ Especificação vigente: `ProjetoFinalModulo2-Descritivo.md` + `Machine Learning
 - Continua **obrigatório**: dataset com ≥10 classes, arquitetura YOLO, `POST /detect` com `UploadFile`, JSON estruturado (sem imagem desenhada), Kanban (backlog/todo/doing/blocked/review/done), GitFlow (`main`/`develop`/`feature/*`), README e vídeo de até 7 min.
 - Prazo: **03/11/2026 22h** no AVA (era 02/11 15h). Não alterar o repo depois da entrega; plágio = 0.
 - Trabalho **individual** → benchmark entre versões do YOLO não é obrigatório.
-- Ainda não decididos: dataset, versão do YOLO, nome do software.
+
+## Decisões tomadas (2026-10-20)
+- **Software:** `ScanVision` (título do FastAPI, logger e `--name` do run de fine-tuning).
+- **Trilha C — supermercado:** 13 classes do COCO (IDs 39, 41, 45–55) sobre o `val2017`.
+- **Modelo:** `yolo11n.pt` pré-treinado, **sem fine-tuning** (`scripts/train.py` fica pronto para o opcional).
+- **Dataset:** `data/coco-subset/` — 1.160 imagens, 5.323 instâncias, split 812/174/174 (seed 42, sem vazamento). Gerado por `scripts/prepare_dataset.py --download`; labels do zip vêm em `coco/labels/val2017/` (não `labels/val2017/`) e em formato **YOLO-segmentação** (polígono), não bbox.
+- **Resultado medido:** 13/13 classes no split de teste (precisão 0,70 / recall 0,42 @`conf=0.25`, IoU ≥ 0,5) e 13/13 em 38 imagens externas do Wikimedia Commons (acerto da classe esperada 22/38). Relatórios: `docs/evaluation-report*.md` e `docs/external-report.md`.
+- **Repositório:** <https://github.com/RSC-SC/ML-ProjetoFinal-Mod2> — GitFlow completo **local**; push pendente de `gh auth login` do aluno.
+- **Kanban:** <https://trello.com/b/esPArbhZ/scanvision> — espelho dos cartões em `docs/trello-backlog.md`.
+
+## O que falta
+- `gh auth login` + push das branches (main, develop e 8 `feature/*`).
+- Gravar o vídeo (até 7 min) e entregar no AVA até **03/11/2026 22h**.
 
 ## Ambiente (macOS, Apple Silicon, M5 Pro 24 GB)
 - `python3` do PATH é 3.15 (homebrew) e **torch não publica wheel cp315** (2.14.1: cp310–cp314). Use `python3.12` (`/opt/homebrew/bin/python3.12`) para criar o venv.
