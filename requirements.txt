@@ -1,0 +1,25 @@
+# Dependências diretas do projeto — versões fixadas para reprodutibilidade.
+# Instalar com Python 3.12 (o `python3` padrão da máquina é 3.15 e o torch
+# ainda não publica wheel para cp315):
+#
+#   python3.12 -m venv .venv
+#   .venv/bin/pip install -r requirements.txt
+
+# --- Inferência YOLO ---
+ultralytics==8.4.183
+torch==2.14.1
+torchvision==0.29.1
+
+# --- API ---
+fastapi==0.152.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+pydantic-settings==2.16.1
+
+# --- Imagens ---
+pillow==13.0.0
+numpy==2.5.4
+
+# --- Testes ---
+pytest==9.1.1
+httpx==0.28.1
