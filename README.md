@@ -1,6 +1,9 @@
 # ScanVision — Detecção de Objetos em Imagens de Supermercado
 
+> **Autor:** Rafael Cunha · **Curso:** SCTEC — Módulo 2 (Machine Learning e Visão Computacional)
 > **Nome do software:** `ScanVision` — detecta produtos em imagens de supermercado.
+> **Repositório:** <https://github.com/RSC-SC/ML-ProjetoFinal-Mod2> ·
+> **Kanban:** <https://trello.com/b/esPArbhZ/scanvision>
 
 Sistema backend-only de detecção de objetos: um modelo **YOLO** identifica produtos em
 imagens e devolve as caixas delimitadoras em **JSON**, consumíveis por qualquer
