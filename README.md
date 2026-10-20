@@ -237,13 +237,30 @@ curl -X POST "http://127.0.0.1:8000/detect" \
 ## Testes automatizados
 
 ```bash
-pytest                 # unitários + integração (13+ testes)
+pytest                 # unitários + integração (14 testes)
 pytest -m integration  # só os que carregam o modelo real
 ```
 
 Cobrem: contrato JSON exato, filtros de escopo, content-type inválido, bytes que não são
 imagem, arquivo vazio, limite de tamanho, modelo não carregado, imagem sem detecções e
 o caminho completo de inferência com o modelo real.
+
+### Teste com vídeo (demonstração)
+
+O enunciado é `POST /detect` com **imagem**, então não existe endpoint de vídeo. Para
+acompanhar objetos em movimento, `scripts/detect_video.py` extrai quadros de um arquivo
+de vídeo, envia **cada quadro para a API rodando** (o mesmo caminho do avaliador) e grava
+um vídeo de saída com as caixas desenhadas:
+
+```bash
+uvicorn main:app --reload                       # terminal 1
+.venv/bin/python scripts/detect_video.py meu_video.mov --fps 3 --save-frames   # terminal 2
+```
+
+Resultado em `runs/video/meu_video_anotado.mp4` (gitignored). Com um vídeo sintético de
+24 quadros (`runs/video_sintetico.mp4`) o teste mediu: **8 quadros enviados, detecções em
+7 deles, 6 classes distintas** e latência por quadro de **mediana 11 ms** (o primeiro
+quadro custa ~860 ms, que é o aquecimento do modelo no MPS) — cerca de **8 quadros/s**.
 
 ## Fine-tuning (opcional)
 

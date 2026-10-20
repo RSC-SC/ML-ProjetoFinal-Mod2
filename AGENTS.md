@@ -19,7 +19,7 @@ Especificação vigente: `ProjetoFinalModulo2-Descritivo.md` + `Machine Learning
 - **Kanban:** <https://trello.com/b/esPArbhZ/scanvision> — espelho dos cartões em `docs/trello-backlog.md`.
 
 ## O que falta
-- `gh auth login` + push das branches (main, develop e 8 `feature/*`).
+- `gh auth login` + push das branches (`main`, `develop` e todas as `feature/*` —9 no total em 2026-10-20).
 - Gravar o vídeo (até 7 min) e entregar no AVA até **03/11/2026 22h**.
 
 ## Ambiente (macOS, Apple Silicon, M5 Pro 24 GB)
