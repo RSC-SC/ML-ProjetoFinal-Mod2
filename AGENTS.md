@@ -15,7 +15,7 @@ Especificação vigente: `ProjetoFinalModulo2-Descritivo.md` + `Machine Learning
 - **Modelo:** `yolo11n.pt` pré-treinado, **sem fine-tuning** (`scripts/train.py` fica pronto para o opcional).
 - **Dataset:** `data/coco-subset/` — 1.160 imagens, 5.323 instâncias, split 812/174/174 (seed 42, sem vazamento). Gerado por `scripts/prepare_dataset.py --download`; labels do zip vêm em `coco/labels/val2017/` (não `labels/val2017/`) e em formato **YOLO-segmentação** (polígono), não bbox.
 - **Resultado medido:** 13/13 classes no split de teste (precisão 0,70 / recall 0,42 @`conf=0.25`, IoU ≥ 0,5) e 13/13 em 38 imagens externas do Wikimedia Commons (acerto da classe esperada 22/38). Relatórios: `docs/evaluation-report*.md` e `docs/external-report.md`.
-- **Repositório:** <https://github.com/RSC-SC/ML-ProjetoFinal-Mod2> — GitFlow completo **local**; push pendente de `gh auth login` do aluno.
+- **Repositório:** <https://github.com/RSC-SC/ML-ProjetoFinal-Mod2> — GitFlow completo e **pushado** (13 branches, `main` com tudo mergeado).
 - **Kanban:** <https://trello.com/b/esPArbhZ/scanvision> — espelho dos cartões em `docs/trello-backlog.md`.
 - **Frontend (2026-10-20):** `frontend/` (HTML/CSS/JS puro, sem build) servido pela própria API em `GET /`; envia `multipart/form-data` para `POST /detect` e desenha as caixas no `<canvas>`. Contrato da API inalterado; `CORS_ORIGINS` (vazio por padrão) libera o frontend hospedado em outro host.
 
