@@ -18,6 +18,7 @@ front-end ou sistema de PDV/estoque.
 - [Instalação](#instalação)
 - [Preparação do dataset](#preparação-do-dataset)
 - [Execução da API](#execução-da-api)
+- [Interface de demonstração (frontend)](#interface-de-demonstração-frontend)
 - [Payload de exemplo](#payload-de-exemplo)
 - [Variáveis de ambiente](#variáveis-de-ambiente)
 - [Testes automatizados](#testes-automatizados)
@@ -169,6 +170,34 @@ uvicorn main:app --reload
 Os pesos `yolo11n.pt` (~5,6 MB) são baixados automaticamente na primeira subida do
 serviço.
 
+## Interface de demonstração (frontend)
+
+O enunciado exige uma API que devolve **JSON puro** — nada de imagem desenhada no
+backend. Para facilitar a demonstração, o repositório inclui um frontend estático
+(HTML + CSS + JS, sem build, sem dependências) em `frontend/`, servido pela **mesma**
+aplicação:
+
+```bash
+uvicorn main:app --reload
+# abra http://127.0.0.1:8000/
+```
+
+Fluxo da página:
+
+1. você arrasta (ou escolhe) uma imagem;
+2. o navegador envia `multipart/form-data` para `POST /detect` (mesmo endpoint do avaliador);
+3. com o JSON em mãos, o canvas desenha as caixas **no cliente** — cada classe recebe
+   uma cor determinística e o rótulo mostra `classe + confiança`;
+4. a página exibe também a tabela de detecções e o JSON bruto devolvido pela API.
+
+O campo "Endpoint" permite apontar para outra instância da API (ex.: container ou
+máquina remota). Se o frontend for servido por outro host, habilite CORS via
+`CORS_ORIGINS` (veja [Variáveis de ambiente](#variáveis-de-ambiente)).
+
+> As rotas da API (`/detect`, `/health`, `/docs`) são registradas **antes** do mount
+> estático em `/`, portanto não são sombreadas pelo frontend — coberto pelo teste
+> `tests/test_frontend.py`.
+
 ## Payload de exemplo
 
 **Requisição** (Swagger, Postman ou cURL) — usando a imagem de exemplo do repositório:
@@ -233,11 +262,12 @@ curl -X POST "http://127.0.0.1:8000/detect" \
 | `DEVICE` | `auto` | `auto` (MPS se disponível) · `mps` · `cpu` |
 | `SCOPE` | `dataset` | `dataset` = só as 13 classes · `all` = as 80 do COCO |
 | `MAX_UPLOAD_MB` | `10` | limite do upload |
+| `CORS_ORIGINS` | _(vazio)_ | origens liberadas para CORS, separadas por vírgula (ex.: `http://localhost:5500`); vazio = desabilitado |
 
 ## Testes automatizados
 
 ```bash
-pytest                 # unitários + integração (14 testes)
+pytest                 # unitários + integração (18 testes)
 pytest -m integration  # só os que carregam o modelo real
 ```
 
@@ -276,7 +306,7 @@ MODEL_PATH=runs/detect/scanvision/weights/best.pt uvicorn main:app --reload
 
 ```
 .
-├── main.py                  # app FastAPI (uvicorn main:app --reload)
+├── main.py                  # app FastAPI (uvicorn main:app --reload) + mount do frontend
 ├── app/
 │   ├── api.py               # POST /detect
 │   ├── schemas.py           # contrato JSON
@@ -285,12 +315,21 @@ MODEL_PATH=runs/detect/scanvision/weights/best.pt uvicorn main:app --reload
 │   │   └── classes.py       # fonte única das 13 classes
 │   └── services/
 │       └── detector.py      # modelo carregado UMA única vez no startup
+├── frontend/                # demo estática (HTML/CSS/JS) servida em GET /
+│   ├── index.html
+│   ├── app.js               # chama /detect e desenha as caixas no <canvas>
+│   └── style.css
 ├── scripts/
 │   ├── prepare_dataset.py   # download + filtro + split + data.yaml
+│   ├── evaluate.py          # avaliação no split de teste
+│   ├── fetch_external.py    # baixa imagens externas (Wikimedia Commons)
+│   ├── eval_external.py     # avalia generalização nas imagens externas
+│   ├── detect_video.py      # demo com vídeo (quadro a quadro na API)
+│   ├── demo_payload.py      # gera examples/payload_real.json
 │   └── train.py             # fine-tuning opcional
 ├── tests/                   # pytest
 ├── data/                    # dataset (gitignorado)
-└── docs/                    # roteiro do vídeo, backlog do Kanban
+└── docs/                    # roteiro do vídeo, backlog do Kanban, relatórios
 ```
 
 ## GitFlow (branches)
@@ -301,8 +340,15 @@ MODEL_PATH=runs/detect/scanvision/weights/best.pt uvicorn main:app --reload
 | `develop` | integração das features |
 | `feature/project-scaffold` | estrutura, dependências e testes |
 | `feature/dataset-prep` | download/preparação do dataset |
+| `feature/dataset-validation` | contagem de imagens/instâncias e checagem de vazamento |
 | `feature/api-setup` | endpoint `POST /detect` e validações |
+| `feature/yolo-finetuning` | script de fine-tuning (opcional) e avaliação |
+| `feature/identity-links` | identidade do autor e links do repositório |
+| `feature/external-validation` | generalização em imagens externas |
+| `feature/repo-rules` | regras do repositório (AGENTS.md) |
+| `feature/video-demo` | demo com vídeo (`scripts/detect_video.py`) |
 | `feature/docs-delivery` | README, vídeo e Kanban |
+| `feature/frontend` | interface de demonstração que desenha as caixas |
 
 Commits no padrão `tipo(escopo): descrição` (ex.: `feat(api): adiciona endpoint /detect`).
 

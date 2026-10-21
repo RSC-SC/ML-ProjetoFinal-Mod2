@@ -17,9 +17,9 @@ Especificação vigente: `ProjetoFinalModulo2-Descritivo.md` + `Machine Learning
 - **Resultado medido:** 13/13 classes no split de teste (precisão 0,70 / recall 0,42 @`conf=0.25`, IoU ≥ 0,5) e 13/13 em 38 imagens externas do Wikimedia Commons (acerto da classe esperada 22/38). Relatórios: `docs/evaluation-report*.md` e `docs/external-report.md`.
 - **Repositório:** <https://github.com/RSC-SC/ML-ProjetoFinal-Mod2> — GitFlow completo **local**; push pendente de `gh auth login` do aluno.
 - **Kanban:** <https://trello.com/b/esPArbhZ/scanvision> — espelho dos cartões em `docs/trello-backlog.md`.
+- **Frontend (2026-10-20):** `frontend/` (HTML/CSS/JS puro, sem build) servido pela própria API em `GET /`; envia `multipart/form-data` para `POST /detect` e desenha as caixas no `<canvas>`. Contrato da API inalterado; `CORS_ORIGINS` (vazio por padrão) libera o frontend hospedado em outro host.
 
 ## O que falta
-- `gh auth login` + push das branches (`main`, `develop` e todas as `feature/*` —9 no total em 2026-10-20).
 - Gravar o vídeo (até 7 min) e entregar no AVA até **03/11/2026 22h**.
 
 ## Ambiente (macOS, Apple Silicon, M5 Pro 24 GB)

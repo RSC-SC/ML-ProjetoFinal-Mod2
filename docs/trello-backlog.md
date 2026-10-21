@@ -27,7 +27,7 @@ avalia a **movimentação correta** (nada fica eternamente em `doing`).
 | doing | _(nada parado — mova o card assim que iniciar)_ |
 | blocked | _(vazia — mantenha a coluna mesmo assim)_ |
 | review | README completo (aguardando revisão final) |
-| done | Definição do escopo (trilha C, 13 classes) · Setup GitFlow · Ambiente Python 3.12 e dependências · Estrutura da API · Endpoint `POST /detect` · Testes pytest (14) · Quadro Kanban público · Baixar/preparar dataset (1.160 imagens) · Relatório de contagens e splits sem vazamento · Avaliação medida no split de teste (13/13 classes) · Validação em imagens variadas (38 imagens externas, 13/13 classes) |
+| done | Definição do escopo (trilha C, 13 classes) · Setup GitFlow · Ambiente Python 3.12 e dependências · Estrutura da API · Endpoint `POST /detect` · Testes pytest (18) · Quadro Kanban público · Baixar/preparar dataset (1.160 imagens) · Relatório de contagens e splits sem vazamento · Avaliação medida no split de teste (13/13 classes) · Validação em imagens variadas (38 imagens externas, 13/13 classes) · Demo com vídeo (`scripts/detect_video.py`) · Interface de demonstração (frontend que desenha as caixas) |
 
 ---
 
@@ -114,6 +114,11 @@ para cá com o motivo no comentário. Volte para `doing` quando destravar._
 _Cartões prontos e aguardando conferência (sua ou de um colega) antes de ir para `done`._
 
 ### DONE
+
+**`[Rafael Cunha]` Interface de demonstração (frontend que desenha as caixas)**
+- **Especificação:** página estática em `frontend/` (HTML/CSS/JS sem build) servida pela própria API em `GET /`; envia a imagem em `multipart/form-data` para `POST /detect` e desenha as bounding boxes no `<canvas>` a partir do JSON, sem alterar o contrato do endpoint.
+- **Critério de pronto:** upload por drag&drop e por seletor; caixas com cor por classe e rótulo `classe + confiança`; tabela de detecções e JSON bruto exibidos; rotas da API não sombreadas pelo mount (`tests/test_frontend.py`).
+- **Evidência medida (20/10/2026):** imagem `examples/external/orange_2.jpg` → 16 detecções, tabela e JSON renderizados, 44 ms de ida e volta com o modelo já aquecido, zero erros no console.
 
 **`[Rafael Cunha]` Definição do escopo e da trilha de classes**
 - **Especificação:** decisão de usar as **13 classes de supermercado do COCO** (IDs 39–55) com modelo **pré-treinado YOLO11n**, sem fine-tuning obrigatório (opcional no enunciado), trabalho individual.
