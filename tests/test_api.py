@@ -109,3 +109,27 @@ def test_health_informa_modelo_device_e_escopo(client):
     assert body["model"] == "yolo11n.pt"
     assert body["device"] in {"mps", "cpu"}
     assert body["scope"] == "dataset"
+
+
+def test_cors_so_é_habilitado_quando_configurado(monkeypatch):
+    """Sem CORS_ORIGINS o preflight não é respondido; com a variável, é liberado."""
+    from fastapi.testclient import TestClient
+
+    from app.core.config import get_settings
+    from main import create_app
+
+    origem = "http://localhost:5500"
+    headers = {"Origin": origem, "Access-Control-Request-Method": "POST"}
+
+    get_settings.cache_clear()
+    with TestClient(create_app(load_model=False)) as sem_cors:
+        assert "access-control-allow-origin" not in sem_cors.options(
+            "/detect", headers=headers
+        ).headers
+
+    monkeypatch.setenv("CORS_ORIGINS", f"{origem}, http://outro.local")
+    get_settings.cache_clear()
+    with TestClient(create_app(load_model=False)) as com_cors:
+        resp = com_cors.options("/detect", headers=headers)
+    assert resp.status_code == 200
+    assert resp.headers["access-control-allow-origin"] == origem
